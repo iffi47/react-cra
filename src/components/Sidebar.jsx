@@ -1,10 +1,14 @@
 import { useState } from "react";
 import Button from "./Button.jsx";
 
-export default function Sidebar({onStartAddProject, projects = []}) {
+export default function Sidebar({
+  onSelectProject,
+  onStartAddProject,
+  projects = [],
+  selectedProjectId,
+}) {
   const [activeItem, setActiveItem] = useState("");
   const [projectsOpen, setProjectsOpen] = useState(false);
-  const [activeProject, setActiveProject] = useState({});
 
   const menuItems = [
     { id: "project", label: "New Project", icon: "DB" },
@@ -24,8 +28,8 @@ export default function Sidebar({onStartAddProject, projects = []}) {
       setProjectsOpen((isOpen) => !isOpen);
     }
   }
-  function handleProjectSelection(proj){
-    setActiveProject(proj)
+  function handleProjectSelection(proj) {
+    onSelectProject(proj.id);
   }
   return (
     <aside className="flex flex-col border-b border-black bg-stone-950 px-5 py-6 text-stone-50 md:min-h-screen md:w-72 md:border-b-0 md:border-r md:px-6 md:py-10">
@@ -68,7 +72,11 @@ export default function Sidebar({onStartAddProject, projects = []}) {
                       <li
                         onClick={() => handleProjectSelection(project)}
                         key={`${project.title}-${index}`}
-                        className={`border border-black  px-3 py-2 text-sm hover:bg-stone-200 hover:text-stone-950  ${project.id===activeProject.id ? 'bg-stone-200 text-stone-950': 'text-stone-200 bg-stone-900'}`}
+                        className={`cursor-pointer border border-black px-3 py-2 text-sm hover:bg-stone-200 hover:text-stone-950 ${
+                          project.id === selectedProjectId
+                            ? "bg-stone-200 text-stone-950"
+                            : "bg-stone-900 text-stone-200"
+                        }`}
                       >
                         {project.title}
                       </li>

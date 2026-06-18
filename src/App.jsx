@@ -1,6 +1,7 @@
 import NewProject from "./components/NewProject";
 import NoProject from "./components/NoProject";
 import Sidebar from "./components/Sidebar";
+import ViewProject from "./components/ViewProject";
 import { useState } from "react";
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
   function handleProjects(project) {
     setUserProjects((prev) => {
       return {
-        ...prev,
+        selectedProject: project.id,
         projects: [...prev.projects, project],
       };
     });
@@ -26,14 +27,57 @@ function App() {
       };
     });
   }
+  function handleCancelProject (){
+    setUserProjects((prevState) => {
+      return {
+        ...prevState,
+        selectedProject: undefined,
+      };
+    });
+  }
+
+  function handleSelectProject(id) {
+    setUserProjects((prevState) => {
+      return {
+        ...prevState,
+        selectedProject: id,
+      };
+    });
+  }
+
+  function handleDeleteProject() {
+    setUserProjects((prevState) => {
+      return {
+        selectedProject: undefined,
+        projects: prevState.projects.filter(
+          (project) => project.id !== prevState.selectedProject
+        ),
+      };
+    });
+  }
+
+  const selectedProject = userProjects.projects.find(
+    (project) => project.id === userProjects.selectedProject
+  );
 
   return (
     <main className="app-shell">
       <div className="app-layout">
-        <Sidebar onStartAddProject={handleStartAddProject} projects={userProjects.projects} />
+        <Sidebar
+          onSelectProject={handleSelectProject}
+          onStartAddProject={handleStartAddProject}
+          projects={userProjects.projects}
+          selectedProjectId={userProjects.selectedProject}
+        />
         <section className="flex-1 px-4 py-8 md:px-10 md:py-12">
-         {userProjects.selectedProject===null && <NewProject handleNewProjects={handleProjects}  />}
+         {userProjects.selectedProject===null && <NewProject handleNewProjects={handleProjects} handleCancel={handleCancelProject}  />}
           {userProjects.selectedProject===undefined &&  <NoProject onStartAddProject={handleStartAddProject}  />}
+          {selectedProject && (
+            <ViewProject
+              onDelete={handleDeleteProject}
+              project={selectedProject}
+            />
+          )}
         </section>
       </div>
     </main>
