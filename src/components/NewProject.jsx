@@ -2,7 +2,7 @@ import Button from "./Button.jsx";
 import Input from "./Input.jsx";
 import { useState } from "react";
 
-export default function NewProject({ handleNewProjects }) {
+export default function NewProject({ handleNewProjects, cancelAddition }) {
   const [project, setProject] = useState({
     title: "",
     description: "",
@@ -24,6 +24,10 @@ export default function NewProject({ handleNewProjects }) {
   }
 
   function handleOnSave(event) {
+    //Validation
+    if(!project.title || !project.description || !project.createdAt){
+      
+    }
     event.preventDefault();
     handleNewProjects({ ...project });
     setProject({

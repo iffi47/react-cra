@@ -1,18 +1,39 @@
 import Button from "./Button.jsx";
+import { createPortal } from "react-dom";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
-export default function Modal({
-  children,
-  isOpen,
-  onClose,
-  title,
-  actions,
-}) {
-  if (!isOpen) {
+const Modal = forwardRef(function Modal(
+  { children, isOpen, onClose, title, actions },
+  ref
+) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const isModalOpen = typeof isOpen === "boolean" ? isOpen : modalIsOpen;
+
+  function handleClose() {
+    setModalIsOpen(false);
+    onClose?.();
+  }
+
+  useImperativeHandle(ref, () => {
+    return {
+      open() {
+        setModalIsOpen(true);
+      },
+      close() {
+        handleClose();
+      },
+      toggle() {
+        setModalIsOpen((isOpen) => !isOpen);
+      },
+    };
+  });
+
+  if (!isModalOpen) {
     return null;
   }
 
-  return (
-    <div className="modal-backdrop" role="presentation" onClick={onClose}>
+  return createPortal(
+    <div className="modal-backdrop" role="presentation" onClick={handleClose}>
       <section
         aria-modal="true"
         className="modal-panel"
@@ -24,7 +45,7 @@ export default function Modal({
           <Button
             aria-label="Close modal"
             className="h-9 w-9 p-0"
-            onClick={onClose}
+            onClick={handleClose}
             size="sm"
             variant="secondary"
           >
@@ -38,6 +59,9 @@ export default function Modal({
           </div>
         )}
       </section>
-    </div>
+    </div>,
+    document.getElementById("modal-root")
   );
-}
+});
+
+export default Modal;
