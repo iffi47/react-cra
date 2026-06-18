@@ -4,6 +4,7 @@ import Button from "./Button.jsx";
 export default function Sidebar({onStartAddProject, projects = []}) {
   const [activeItem, setActiveItem] = useState("");
   const [projectsOpen, setProjectsOpen] = useState(false);
+  const [activeProject, setActiveProject] = useState({});
 
   const menuItems = [
     { id: "project", label: "New Project", icon: "DB" },
@@ -12,9 +13,8 @@ export default function Sidebar({onStartAddProject, projects = []}) {
     // { id: "users", label: "Users", icon: "US" },
     // { id: "settings", label: "Settings", icon: "ST" },
   ];
-  function handleProjectSelection (proj) {
+  function handleProjectAddition (proj) {
     setActiveItem(proj.id);
-
     if (proj.id === "project") {
       setProjectsOpen(false);
       onStartAddProject();
@@ -23,6 +23,9 @@ export default function Sidebar({onStartAddProject, projects = []}) {
     if (proj.id === "projects") {
       setProjectsOpen((isOpen) => !isOpen);
     }
+  }
+  function handleProjectSelection(proj){
+    setActiveProject(proj)
   }
   return (
     <aside className="flex flex-col border-b border-black bg-stone-950 px-5 py-6 text-stone-50 md:min-h-screen md:w-72 md:border-b-0 md:border-r md:px-6 md:py-10">
@@ -44,7 +47,7 @@ export default function Sidebar({onStartAddProject, projects = []}) {
                     : "sidebar-link-idle"
                 }`}
                 aria-expanded={item.id === "projects" ? projectsOpen : undefined}
-                onClick={() => handleProjectSelection(item)}
+                onClick={() => handleProjectAddition(item)}
               >
                 <span className="flex h-8 w-8 items-center justify-center border border-black bg-stone-100 text-xs font-bold text-stone-950">
                   {item.icon}
@@ -63,8 +66,9 @@ export default function Sidebar({onStartAddProject, projects = []}) {
                   ) : (
                     projects.map((project, index) => (
                       <li
+                        onClick={() => handleProjectSelection(project)}
                         key={`${project.title}-${index}`}
-                        className="border border-black bg-stone-900 px-3 py-2 text-sm text-stone-200"
+                        className={`border border-black  px-3 py-2 text-sm hover:bg-stone-200 hover:text-stone-950  ${project.id===activeProject.id ? 'bg-stone-200 text-stone-950': 'text-stone-200 bg-stone-900'}`}
                       >
                         {project.title}
                       </li>
