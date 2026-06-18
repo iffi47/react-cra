@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "./Button.jsx";
 
-export default function Sidebar() {
+export default function Sidebar({onStartAddProject}) {
   const [activeItem, setActiveItem] = useState("");
 
   const menuItems = [
@@ -10,7 +10,13 @@ export default function Sidebar() {
     { id: "users", label: "Users", icon: "US" },
     { id: "settings", label: "Settings", icon: "ST" },
   ];
+  function handleProjectSelection (proj) {
+    setActiveItem(proj.id);
 
+    if (proj.id === "project") {
+      onStartAddProject();
+    }
+  }
   return (
     <aside className="flex flex-col border-b border-black bg-stone-950 px-5 py-6 text-stone-50 md:min-h-screen md:w-72 md:border-b-0 md:border-r md:px-6 md:py-10">
       <div className="border-b border-black pb-6">
@@ -30,7 +36,7 @@ export default function Sidebar() {
                     ? "sidebar-link-active"
                     : "sidebar-link-idle"
                 }`}
-                onClick={() => setActiveItem(item.id)}
+                onClick={() => handleProjectSelection(item)}
               >
                 <span className="flex h-8 w-8 items-center justify-center border border-black bg-stone-100 text-xs font-bold text-stone-950">
                   {item.icon}

@@ -1,7 +1,35 @@
 import Button from "./Button.jsx";
 import Input from "./Input.jsx";
+import { useState } from "react";
 
-export default function NewProject() {
+export default function NewProject({ handleNewProjects }) {
+  const [project, setProject] = useState({
+    title: "",
+    description: "",
+    createdAt: "",
+  });
+
+  function handleFormChange(event) {
+    const { name, value } = event.target;
+
+    setProject((prevProject) => {
+      return {
+        ...prevProject,
+        [name]: value,
+      };
+    });
+  }
+
+  function handleOnSave(event) {
+    event.preventDefault();
+    handleNewProjects({ ...project });
+    setProject({
+    title: "",
+    description: "",
+    createdAt: "",
+  })
+  }
+
   return (
     <section className=" mx-auto max-w-3xl">
       <div className="mb-8 border-b border-black pb-5">
@@ -11,10 +39,34 @@ export default function NewProject() {
         </p>
       </div>
 
-      <form className="space-y-1">
-        <Input label="Title" placeholder="Enter title" />
-        <Input label="Description" placeholder="Enter description" textarea />
-        <Input label="Due Date" type="date" />
+      <form
+        className="space-y-1"
+        onChange={handleFormChange}
+        onSubmit={handleOnSave}
+      >
+        <Input
+          required
+          label="Project Title"
+          name="title"
+          placeholder="Enter title"
+          value={project.title}
+        />
+        <Input
+          required
+          label="Project Description"
+          name="description"
+          placeholder="Enter description"
+          textarea
+          value={project.description}
+        />
+        <Input
+          required
+          label="Project Due Date"
+          name="createdAt"
+          placeholder="Select Date"
+          type="date"
+          value={project.createdAt}
+        />
 
         <menu className="flex items-center justify-end gap-3 border-t border-black pt-5">
           <li>

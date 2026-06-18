@@ -1,7 +1,7 @@
 import noProjectImage from "../assets/no-projects.png";
 import Button from "./Button";
 
-export default function NoProject({}) {
+export default function NoProject({onStartAddProject}) {
   return(
     <>
       <div className="m-auto p-auto text-center w-2/3">
@@ -9,7 +9,7 @@ export default function NoProject({}) {
         <h2 className="section-title">No Project Selected!</h2>
         <p className="text-stone-400 mb-4">Select a project or get started with a new one</p>
         <p className="mt-4">
-          <Button variant="priamry" type="submit">Create a new project</Button>
+          <Button variant="priamry" type="submit" onClick={onStartAddProject} >Create a new project</Button>
         </p>
       </div>
     </>
