@@ -1,11 +1,13 @@
 import { useState } from "react";
 import Button from "./Button.jsx";
 
-export default function Sidebar({onStartAddProject}) {
+export default function Sidebar({onStartAddProject, projects = []}) {
   const [activeItem, setActiveItem] = useState("");
+  const [projectsOpen, setProjectsOpen] = useState(false);
 
   const menuItems = [
     { id: "project", label: "New Project", icon: "DB" },
+    { id: "projects", label: "Personal Projects", icon: "AN" },
     // { id: "analytics", label: "Analytics", icon: "AN" },
     // { id: "users", label: "Users", icon: "US" },
     // { id: "settings", label: "Settings", icon: "ST" },
@@ -14,7 +16,12 @@ export default function Sidebar({onStartAddProject}) {
     setActiveItem(proj.id);
 
     if (proj.id === "project") {
+      setProjectsOpen(false);
       onStartAddProject();
+    }
+
+    if (proj.id === "projects") {
+      setProjectsOpen((isOpen) => !isOpen);
     }
   }
   return (
@@ -36,13 +43,35 @@ export default function Sidebar({onStartAddProject}) {
                     ? "sidebar-link-active"
                     : "sidebar-link-idle"
                 }`}
+                aria-expanded={item.id === "projects" ? projectsOpen : undefined}
                 onClick={() => handleProjectSelection(item)}
               >
                 <span className="flex h-8 w-8 items-center justify-center border border-black bg-stone-100 text-xs font-bold text-stone-950">
                   {item.icon}
                 </span>
                 <span>{item.label}</span>
+                {item.id === "projects" && (
+                  <span className="ml-auto text-xs">
+                    {projectsOpen ? "v" : ">"}
+                  </span>
+                )}
               </button>
+              {item.id === "projects" && projectsOpen && (
+                <ul className="ml-11 mt-2 space-y-2 border-l border-stone-700 pl-3">
+                  {projects.length === 0 ? (
+                    <li className="text-sm text-stone-400">No projects yet</li>
+                  ) : (
+                    projects.map((project, index) => (
+                      <li
+                        key={`${project.title}-${index}`}
+                        className="border border-black bg-stone-900 px-3 py-2 text-sm text-stone-200"
+                      >
+                        {project.title}
+                      </li>
+                    ))
+                  )}
+                </ul>
+              )}
             </li>
           ))}
         </ul>
