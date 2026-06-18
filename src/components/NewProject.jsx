@@ -11,11 +11,14 @@ export default function NewProject({ handleNewProjects }) {
 
   function handleFormChange(event) {
     const { name, value } = event.target;
-
+    let data= {
+      [name]: value,
+      id: Math.random()
+    }
     setProject((prevProject) => {
       return {
         ...prevProject,
-        [name]: value,
+        ...data
       };
     });
   }

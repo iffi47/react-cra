@@ -32,8 +32,8 @@ function App() {
       <div className="app-layout">
         <Sidebar onStartAddProject={handleStartAddProject} />
         <section className="flex-1 px-4 py-8 md:px-10 md:py-12">
-          <NewProject handleNewProjects={handleProjects}  />
-          <NoProject onStartAddProject={handleStartAddProject}  />
+         {userProjects.selectedProject===null && <NewProject handleNewProjects={handleProjects}  />}
+          {userProjects.selectedProject===undefined &&  <NoProject onStartAddProject={handleStartAddProject}  />}
         </section>
       </div>
     </main>

@@ -6,9 +6,9 @@ export default function Sidebar({onStartAddProject}) {
 
   const menuItems = [
     { id: "project", label: "New Project", icon: "DB" },
-    { id: "analytics", label: "Analytics", icon: "AN" },
-    { id: "users", label: "Users", icon: "US" },
-    { id: "settings", label: "Settings", icon: "ST" },
+    // { id: "analytics", label: "Analytics", icon: "AN" },
+    // { id: "users", label: "Users", icon: "US" },
+    // { id: "settings", label: "Settings", icon: "ST" },
   ];
   function handleProjectSelection (proj) {
     setActiveItem(proj.id);
