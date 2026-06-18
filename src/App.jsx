@@ -37,12 +37,21 @@ function App() {
   }
 
   function handleSelectProject(id) {
+    if(userProjects.selectedProject==id){
+      setUserProjects((prevState) => {
+      return {
+        ...prevState,
+        selectedProject: undefined,
+      };
+    });
+    }else{
     setUserProjects((prevState) => {
       return {
         ...prevState,
         selectedProject: id,
       };
     });
+  }
   }
 
   function handleDeleteProject() {
